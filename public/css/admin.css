@@ -1,0 +1,18 @@
+/* public/css/admin.css */
+
+body {
+    padding-top: 4.5rem; /* Adjust according to your navbar height */
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* Add your custom styles for admin layout here */
