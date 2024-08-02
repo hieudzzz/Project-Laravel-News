@@ -38,6 +38,7 @@ Route::delete('/admin/loaitin/{id}/destroy', [LoaiTinController::class, 'destroy
 
 //tin
 use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\AdminController;
 
 Route::prefix('admin')->name('news.')->group(function () {
     Route::get('/news', [NewsController::class, 'index'])->name('index');
@@ -59,7 +60,7 @@ Route::prefix('admin')->name('news.')->group(function () {
 
 use App\Http\Controllers\Client\TinController;
 // routes/web.php
-
+Route::get('/test', [AdminController::class, 'index'])->name('admin.index');
 
 Route::get('/', [TinController::class, 'index'])->name('client.home');
 Route::get('/tin/{id}', [TinController::class, 'chitiet'])->name('client.chitiet');
@@ -74,3 +75,8 @@ Route::post('register', [AuthController::class, 'register']);
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+
+
+Route::get('/search', [TinController::class, 'search'])->name('search');
+

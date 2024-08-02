@@ -14,13 +14,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'email_verification_token',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
-   
+
    public function setPasswordAttribute($value)
    {
        $this->attributes['password'] = $value;

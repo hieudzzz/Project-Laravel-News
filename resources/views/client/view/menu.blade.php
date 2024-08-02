@@ -20,12 +20,10 @@
                 <a class="nav-link" href="{{ url('/tintrongloai/' . $loai->id) }}">{{ $loai->tenLoai }}</a>
             </li>
         @endforeach
-        
+
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Tìm kiếm</button>
-      </form>
+     
+
     </div>
   </div>
 </nav>

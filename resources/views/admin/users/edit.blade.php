@@ -1,10 +1,10 @@
-@extends('admin.admin_layout')
+@extends('admin.layouts.master')
 
 @section('content')
 <div class="container mt-4">
     <h1>Sửa Người Dùng</h1>
     <form action="{{ route('users.update', $user->id) }}" method="POST">
-       
+
         @csrf
         @method('PUT')
         <div class="mb-3">

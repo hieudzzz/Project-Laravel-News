@@ -4,10 +4,21 @@
 
 @section('noidung')
 <div class="container">
+    <!-- Tìm kiếm theo thời gian thực -->
+    <div class="mb-3">
+        <input id="search" class="form-control" type="search" placeholder="Tìm kiếm tin tức" aria-label="Search">
+    </div>
+
+    <!-- Kết quả tìm kiếm -->
+
+
     <div class="row">
         <div class="col-md-9">
             <!-- Tin Nổi Bật -->
             <section>
+                <div id="search-results" class="row mb-4">
+                    <!-- Kết quả tìm kiếm sẽ được chèn vào đây -->
+                </div>
                 <h2>Tin Nổi Bật</h2>
                 <div class="row">
                     @foreach ($tinNoiBat as $tin)
@@ -64,4 +75,25 @@
         @include('client.view.newest-news', ['tinMoiNhatThem' => $tinMoiNhatThem])
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#search').on('input', function() {
+            let query = $(this).val();
+            if (query.length > 2) { // Tìm kiếm khi có ít nhất 3 ký tự
+                $.ajax({
+                    url: "{{ route('search') }}",
+                    method: "GET",
+                    data: { query: query },
+                    success: function(data) {
+                        $('#search-results').html(data);
+                    }
+                });
+            } else {
+                $('#search-results').html('');
+            }
+        });
+    });
+</script>
 @endsection

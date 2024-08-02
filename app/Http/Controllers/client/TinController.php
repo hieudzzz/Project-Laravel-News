@@ -10,50 +10,33 @@ use Illuminate\Support\Facades\DB;
 class TinController extends Controller
 {
     public function index()
-{
+    {
+        $tinNoiBat = News::orderBy('ngayDang', 'desc')->limit(3)->get();
+        $tinMoiNhat = News::orderBy('ngayDang', 'desc')->limit(5)->get();
+        $tinXemNhieu = News::orderBy('xem', 'desc')->limit(5)->get();
+        $tinMoiNhatThem = News::orderBy('ngayDang', 'desc')->limit(10)->get();
 
-    $tinNoiBat = News::orderBy('ngayDang', 'desc')->limit(3)->get();
-    $tinMoiNhat = News::orderBy('ngayDang', 'desc')->limit(5)->get();
-    $tinXemNhieu = News::orderBy('xem', 'desc')->limit(5)->get();
-    $tinMoiNhatThem = News::orderBy('ngayDang', 'desc')->limit(10)->get();
+        return view('client.view.home', compact('tinNoiBat', 'tinMoiNhat', 'tinXemNhieu','tinMoiNhatThem'));
+    }
 
-    return view('client.view.home', compact('tinNoiBat', 'tinMoiNhat', 'tinXemNhieu','tinMoiNhatThem'));
-}
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
 
-   // app/Http/Controllers/TinController.php
+        // Tìm kiếm các tin tức có tiêu đề chứa từ khóa
+        $tinNoiBat = News::where('tieuDe', 'like', "%$query%")->get();
 
+        // Trả về một phần của view với kết quả tìm kiếm
+        return view('client.view.search-results', [
+            'tinNoiBat' => $tinNoiBat
+        ])->render(); // Render phần view dưới dạng HTML
+    }
 
-   // app/Http/Controllers/Client/TinController.php
-
-   public function store(Request $request)
-   {
-       $request->validate([
-           'tieuDe' => 'required|string|max:255',
-           'tomTat' => 'required',
-           'noiDung' => 'required',
-           'ngayDang' => 'required|date',
-           'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-       ]);
-
-       $newsData = $request->only(['tieuDe', 'tomTat', 'noiDung', 'ngayDang']);
-
-       if ($request->hasFile('image')) {
-           $imageName = time() . '.' . $request->file('image')->extension();
-           $request->file('image')->storeAs('public', $imageName);
-           $newsData['image'] = asset('storage/' . $imageName); // Lưu URL đầy đủ
-       }
-
-       News::create($newsData);
-
-       return redirect()->route('client.home');
-   }
-
-public function chitiet($id)
-{
-    $news = News::findOrFail($id);
-    // Ngày tháng sẽ tự động được chuyển thành đối tượng Carbon nhờ vào thuộc tính $casts trong model News
-    return view('client.view.chitiet', compact('news'));
-}
+    public function chitiet($id)
+    {
+        $news = News::findOrFail($id);
+        return view('client.view.chitiet', compact('news'));
+    }
 
     public function tintrongloai($idLT)
     {
@@ -62,4 +45,3 @@ public function chitiet($id)
         return view('client.view.tintrongloai', compact('listtin', 'tenLoai'));
     }
 }
-

@@ -1,4 +1,4 @@
-@extends('admin.admin_layout')
+@extends('admin.layouts.master')
 
 @section('content')
     <h1>Chi Tiết Tin Tức</h1>

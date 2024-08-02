@@ -1,4 +1,4 @@
-@extends('admin.admin_layout') <!-- Assuming 'layouts.admin' is your layout -->
+@extends('admin.layouts.master')
 
 @section('content')
     <h1>Danh Sách Tin Tức</h1>

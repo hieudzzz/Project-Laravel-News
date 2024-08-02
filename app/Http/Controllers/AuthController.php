@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    
     public function showRegistrationForm()
     {
         return view('client.view.auth.register');
@@ -57,4 +58,5 @@ class AuthController extends Controller
         Auth::logout();
         return redirect()->route('login')->with('success', 'Logged out successfully!');
     }
+
 }
