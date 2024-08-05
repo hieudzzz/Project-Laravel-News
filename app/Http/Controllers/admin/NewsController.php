@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\LoaiTin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -25,8 +26,8 @@ class NewsController extends Controller
      */
     public function create()
     {
-        $loaitins = LoaiTin::all();
-        return view('admin.news.create', compact('loaitins'));
+        $loaitins = LoaiTin::all(); // Lấy danh sách loại tin
+        return view('admin.news.create', compact('loaitins')); // Trả về view thêm tin tức
     }
 
     /**
@@ -38,54 +39,70 @@ class NewsController extends Controller
             'tieuDe' => 'required|string|max:255',
             'noiDung' => 'required',
             'tomTat' => 'nullable',
-            'ngayDang' => 'required|date',
-            'xem' => 'required|integer',
-            'image' => 'nullable|url',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'idLT' => 'required|exists:loaitins,id',
         ]);
 
-        News::create($request->all());
+        $imageName = time() . '.' . $request->image->extension();
+        $path = $request->file('image')->storeAs('images', $imageName, 'public');
+
+        News::create([
+            'tieuDe' => $request->tieuDe,
+            'noiDung' => $request->noiDung,
+            'tomTat' => $request->tomTat,
+            'ngayDang' => now(),
+            'image' => $imageName,
+            'idLT' => $request->idLT,
+        ]);
+
         return redirect()->route('news.index')->with('success', 'Tin tức đã được thêm thành công.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show($id)
     {
         $news = News::findOrFail($id);
         return view('admin.news.show', compact('news'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit($id)
-    {
-        $news = News::findOrFail($id);
-        $loaitins = LoaiTin::all(); // Get all LoaiTin records
+{
+    $news = News::findOrFail($id);
+    $loaitins = LoaiTin::all();
 
-        return view('admin.news.edit', compact('news', 'loaitins'));
-    }
+    return view('admin.news.edit', compact('news', 'loaitins'));
+}
 
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
             'tieuDe' => 'required|string|max:255',
             'noiDung' => 'required',
             'tomTat' => 'nullable',
-            'ngayDang' => 'required|date',
-            'xem' => 'required|integer',
-            'image' => 'nullable|url',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Thay đổi xác thực cho hình ảnh
             'idLT' => 'required|exists:loaitins,id',
         ]);
 
         $news = News::findOrFail($id);
-        $news->update($request->all());
+
+        if ($request->hasFile('image')) {
+            if ($news->image) {
+                Storage::disk('public')->delete('images/' . $news->image);
+            }
+
+            $imageName = time() . '.' . $request->image->extension();
+            $path = $request->file('image')->storeAs('images', $imageName, 'public');
+            $news->image = $imageName; // Cập nhật tên tệp hình ảnh
+        }
+
+        $news->tieuDe = $request->tieuDe;
+        $news->noiDung = $request->noiDung;
+        $news->tomTat = $request->tomTat;
+        $news->idLT = $request->idLT;
+
+        $news->save();
+
         return redirect()->route('news.index')->with('success', 'Tin tức đã được cập nhật thành công.');
     }
 

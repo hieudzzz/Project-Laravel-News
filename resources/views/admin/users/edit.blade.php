@@ -1,31 +1,41 @@
 @extends('admin.layouts.master')
 
 @section('content')
-<div class="container mt-4">
-    <h1>Sửa Người Dùng</h1>
-    <form action="{{ route('users.update', $user->id) }}" method="POST">
+    <h1>Edit User</h1>
 
+    <form action="{{ route('users.update', $user->id) }}" method="POST">
         @csrf
         @method('PUT')
-        <div class="mb-3">
-            <label for="name" class="form-label">Tên</label>
-            <input type="text" id="name" name="name" class="form-control" value="{{ $user->name }}" required>
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" class="form-control" value="{{ $user->name }}" required>
         </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" class="form-control" value="{{ $user->email }}" required>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" class="form-control" value="{{ $user->email }}" required>
         </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Mật Khẩu</label>
-            <input type="password" id="password" name="password" class="form-control">
-            <small class="form-text text-muted">Nếu bạn muốn thay đổi mật khẩu, nhập mật khẩu mới.</small>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" class="form-control">
+            <small>Leave blank to keep current password</small>
         </div>
-        <div class="mb-3">
-            <label for="password_confirmation" class="form-label">Xác Nhận Mật Khẩu</label>
-            <input type="password" id="password_confirmation" name="password_confirmation" class="form-control">
+
+        <div class="form-group">
+            <label for="password_confirmation">Confirm Password:</label>
+            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
         </div>
-        <button type="submit" class="btn btn-primary">Lưu</button>
-        <a href="{{ route('users.index') }}" class="btn btn-secondary">Quay lại danh sách</a>
+
+        <div class="form-group">
+            <label for="type">Type:</label>
+            <select name="type" id="type" class="form-control" required>
+                <option value="member" {{ $user->type == 'member' ? 'selected' : '' }}>Member</option>
+                <option value="admin" {{ $user->type == 'admin' ? 'selected' : '' }}>Admin</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
     </form>
-</div>
 @endsection

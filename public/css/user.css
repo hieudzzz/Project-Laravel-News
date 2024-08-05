@@ -1,0 +1,38 @@
+body {
+    background-color: #f8f9fa; /* Màu nền nhạt */
+}
+
+.card {
+    border: 1px solid #007bff; /* Viền màu xanh */
+    border-radius: 8px; /* Bo góc */
+}
+
+.card-header {
+    background-color: #007bff; /* Màu nền tiêu đề */
+    color: white; /* Màu chữ */
+}
+
+.card-footer a {
+    color: #007bff; /* Màu chữ link */
+}
+
+.card-footer a:hover {
+    text-decoration: underline; /* Gạch chân khi hover */
+}
+body {
+    background-color: #f8f9fa; /* Màu nền nhạt */
+}
+
+.card {
+    border-radius: 8px; /* Bo góc card */
+}
+
+.card-header {
+    background-color: #007bff; /* Màu nền tiêu đề */
+    color: white; /* Màu chữ */
+}
+
+.text-danger {
+    font-size: 0.9em; /* Kích thước chữ thông báo lỗi */
+}
+

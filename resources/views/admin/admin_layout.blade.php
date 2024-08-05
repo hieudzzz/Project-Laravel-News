@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
     <style>
         .sidebar {
             position: fixed;
@@ -16,7 +14,7 @@
             z-index: 100;
             padding: 48px 0 0;
             box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-            width: 250px; /* Fixed sidebar width */
+            width: 250px;
         }
 
         .main-content {
@@ -31,7 +29,6 @@
 </head>
 <body>
     <div class="d-flex">
-        <!-- Sidebar -->
         <div class="sidebar bg-light">
             <ul class="nav flex-column">
                 <li class="nav-item">
@@ -40,11 +37,9 @@
                     <a class="nav-link" href="{{ route('users.index') }}">Người dùng</a>
 
                 </li>
-                <!-- Add more navigation links here -->
             </ul>
         </div>
 
-        <!-- Main content -->
         <div class="main-content">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container">
@@ -54,7 +49,6 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ml-auto">
-                            <!-- You can customize the navbar links as needed -->
                         </ul>
                     </div>
                 </div>

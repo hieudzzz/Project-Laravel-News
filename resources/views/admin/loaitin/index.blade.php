@@ -3,6 +3,9 @@
 @section('content')
     <div class="container mt-4">
         <h1>Danh sách loại tin</h1>
+         @if(session('admin_name'))
+            <p>Chào mừng, {{ session('admin_name') }}!</p>
+        @endif
         <a href="{{ route('loaitin.create') }}" class="btn btn-primary mb-3">Tạo loại tin mới</a>
         <table class="table">
             <thead>

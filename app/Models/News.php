@@ -8,12 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class News extends Model
 {
     use HasFactory;
+    public function show($id)
+    {
+        $news = News::with('comments.user')->findOrFail($id);
+        return view('client.view.news.detail', compact('news'));
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 
     protected $fillable = [
         'tieuDe', 'noiDung', 'tomTat', 'ngayDang', 'xem', 'image', 'idLT'
     ];
     protected $casts = [
-        'ngayDang' => 'datetime', // Ensures 'ngayDang' is treated as a Carbon instance
+        'ngayDang' => 'datetime',
     ];
     public function loaiTins()
     {

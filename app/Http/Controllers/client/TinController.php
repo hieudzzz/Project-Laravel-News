@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,10 +15,11 @@ class TinController extends Controller
         $tinNoiBat = News::orderBy('ngayDang', 'desc')->limit(3)->get();
         $tinMoiNhat = News::orderBy('ngayDang', 'desc')->limit(5)->get();
         $tinXemNhieu = News::orderBy('xem', 'desc')->limit(5)->get();
-        $tinMoiNhatThem = News::orderBy('ngayDang', 'desc')->limit(10)->get();
+        $tinMoiNhatThem = News::orderBy('ngayDang', 'desc')->limit(10)->get(); // Lấy 10 tin mới nhất
 
-        return view('client.view.home', compact('tinNoiBat', 'tinMoiNhat', 'tinXemNhieu','tinMoiNhatThem'));
+        return view('client.view.home', compact('tinNoiBat', 'tinMoiNhat', 'tinXemNhieu', 'tinMoiNhatThem'));
     }
+
 
     public function search(Request $request)
     {
@@ -35,13 +37,28 @@ class TinController extends Controller
     public function chitiet($id)
     {
         $news = News::findOrFail($id);
-        return view('client.view.chitiet', compact('news'));
+        
+
+        // Tăng lượt xem
+        $news->increment('xem');
+        $tinMoiNhatThem = News::orderBy('ngayDang', 'desc')->limit(10)->get(); // Thêm biến này để lấy tin mới nhất
+
+        return view('client.view.chitiet', compact('news','tinMoiNhatThem'));
     }
 
+
     public function tintrongloai($idLT)
-    {
-        $tenLoai = DB::table('loaitins')->where('id', $idLT)->value('tenLoai');
-        $listtin = DB::table('news')->where('idLT', $idLT)->get();
-        return view('client.view.tintrongloai', compact('listtin', 'tenLoai'));
-    }
+{
+    $tenLoai = DB::table('loaitins')->where('id', $idLT)->value('tenLoai');
+    $listtin = DB::table('news')->where('idLT', $idLT)->get(['id', 'tieuDe', 'tomTat', 'image']); // Lấy cột image
+    $tinMoiNhatThem = News::orderBy('ngayDang', 'desc')->limit(10)->get(); // Thêm biến này để lấy tin mới nhất
+    return view('client.view.tintrongloai', compact('listtin', 'tenLoai', 'tinMoiNhatThem'));
+}
+
+public function show($id)
+{
+    $news = News::with('comments.user')->findOrFail($id);
+    return view('client.view.chitiet', compact('news'));
+}
+
 }

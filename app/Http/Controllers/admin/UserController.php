@@ -30,7 +30,7 @@ class UserController extends Controller
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password, // Không mã hóa mật khẩu
+            'password' => $request->password, 
         ]);
 
         return redirect()->route('users.index')->with('success', 'Người dùng đã được tạo thành công.');
@@ -57,7 +57,7 @@ class UserController extends Controller
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password ?: $user->password, // Không mã hóa mật khẩu
+            'password' => $request->password ?: $user->password,
         ]);
 
         return redirect()->route('users.index')->with('success', 'Cập nhật người dùng thành công.');

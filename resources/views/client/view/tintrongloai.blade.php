@@ -6,16 +6,26 @@
 
 @section('noidung')
     <h1>{{ $tenLoai }}</h1>
-    <ul>
+    <div class="tin-container">
         @foreach ($listtin as $tin)
-            <li>
+            <div class="tin-item">
                 <h2>
                     <a href="{{ route('client.chitiet', ['id' => $tin->id]) }}">
                         {{ $tin->tieuDe }}
                     </a>
                 </h2>
+                <div class="tin-image">
+                    @if($tin->image)
+                        <img src="{{ asset('storage/images/' . $tin->image) }}" alt="{{ $tin->tieuDe }}" class="img-fluid" >
+
+                    @else
+                        <p>No image available</p>
+                    @endif
+                </div>
                 <p>{{ $tin->tomTat }}</p>
-            </li>
+            </div>
         @endforeach
-    </ul>
+    </div>
+
+
 @endsection

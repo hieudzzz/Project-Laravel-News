@@ -9,8 +9,7 @@ class LoaiTin extends Model
 {
     use HasFactory;
 
-    protected $table = 'loaitins'; // Tên của bảng trong cơ sở dữ liệu
-
+    protected $table = 'loaitins'; 
     protected $fillable = [
         'tenLoai',
         'ThuTu',

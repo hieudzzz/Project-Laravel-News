@@ -10,7 +10,7 @@
             <p><strong>Tóm Tắt:</strong> {{ $news->tomTat }}</p>
             <p><strong>Ngày Đăng:</strong> {{ $news->ngayDang }}</p>
             @if($news->image)
-                <img src="{{ $news->image }}" alt="Image" width="200">
+            <img src="{{ asset('storage/images/' . $news->image) }}" alt="Image" width="100">
             @endif
         </div>
         <div class="card-footer">

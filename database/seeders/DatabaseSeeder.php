@@ -12,9 +12,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            LoaiTinSeeder::class, // Nếu có seeder cho bảng loaitins
+            LoaiTinSeeder::class,
             NewsSeeder::class,
-            // Thêm các seeder khác nếu cần
+         
         ]);
     }
 }

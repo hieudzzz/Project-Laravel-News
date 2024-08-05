@@ -13,7 +13,7 @@
 
 
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
             <!-- Tin Nổi Bật -->
             <section>
                 <div id="search-results" class="row mb-4">
@@ -25,7 +25,8 @@
                         <div class="col-md-4 tin-item">
                             @if($tin->image)
                                 <div class="tin-image">
-                                    <img src="{{ $tin->image }}" alt="{{ $tin->tieuDe }}" class="img-fluid">
+                                    <img src="{{ asset('storage/images/' . $tin->image) }}" alt="{{ $tin->tieuDe }}" class="img-fluid">
+
                                 </div>
                             @endif
                             <h3><a href="{{ route('client.chitiet', $tin->id) }}">{{ $tin->tieuDe }}</a></h3>
@@ -43,7 +44,7 @@
                         <div class="col-md-4 tin-item">
                             @if($tin->image)
                                 <div class="tin-image">
-                                    <img src="{{ $tin->image }}" alt="{{ $tin->tieuDe }}" class="img-fluid">
+                                    <img src="{{ asset('storage/images/' . $tin->image) }}" alt="{{ $tin->tieuDe }}" class="img-fluid">
                                 </div>
                             @endif
                             <h3><a href="{{ route('client.chitiet', $tin->id) }}">{{ $tin->tieuDe }}</a></h3>
@@ -61,7 +62,7 @@
                         <div class="col-md-4 tin-item">
                             @if($tin->image)
                                 <div class="tin-image">
-                                    <img src="{{ $tin->image }}" alt="{{ $tin->tieuDe }}" class="img-fluid">
+                                    <img src="{{ asset('storage/images/' . $tin->image) }}" alt="{{ $tin->tieuDe }}" class="img-fluid">
                                 </div>
                             @endif
                             <h3><a href="{{ route('client.chitiet', $tin->id) }}">{{ $tin->tieuDe }}</a></h3>
@@ -72,7 +73,7 @@
             </section>
         </div>
 
-        @include('client.view.newest-news', ['tinMoiNhatThem' => $tinMoiNhatThem])
+
     </div>
 </div>
 

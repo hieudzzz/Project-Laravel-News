@@ -1,33 +1,29 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 
 
 
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\UserController;
 
-// Các route cho người dùng
-Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/admin/users/create', [UserController::class, 'create'])->name('users.create');
-Route::post('/admin/users', [UserController::class, 'store'])->name('users.store');
-Route::get('/admin/users/{user}', [UserController::class, 'show'])->name('users.show');
-Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('users.update');
-Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::resource('users', UserController::class)->middleware(['auth', 'role:admin']);
+
 
 
 use App\Http\Controllers\Admin\LoaiTinController;
-//loaitin
-Route::get('/admin/loaitin', [LoaiTinController::class, 'index'])->name('loaitin.index');
-Route::get('/admin/loaitin/create', [LoaiTinController::class, 'create'])->name('loaitin.create');
-Route::post('/admin/loaitin/store', [LoaiTinController::class, 'store'])->name('loaitin.store');
-Route::get('/admin/loaitin/{id}', [LoaiTinController::class, 'show'])->name('loaitin.show');
-Route::get('/admin/loaitin/{id}/edit', [LoaiTinController::class, 'edit'])->name('loaitin.edit');
-Route::put('/admin/loaitin/{id}/update', [LoaiTinController::class, 'update'])->name('loaitin.update');
-Route::delete('/admin/loaitin/{id}/destroy', [LoaiTinController::class, 'destroy'])->name('loaitin.destroy');
 
-
+// Routes cho admin
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/loaitin', [LoaiTinController::class, 'index'])->name('loaitin.index');
+    Route::get('/admin/loaitin/create', [LoaiTinController::class, 'create'])->name('loaitin.create');
+    Route::post('/admin/loaitin/store', [LoaiTinController::class, 'store'])->name('loaitin.store');
+    Route::get('/admin/loaitin/{id}', [LoaiTinController::class, 'show'])->name('loaitin.show');
+    Route::get('/admin/loaitin/{id}/edit', [LoaiTinController::class, 'edit'])->name('loaitin.edit');
+    Route::put('/admin/loaitin/{id}/update', [LoaiTinController::class, 'update'])->name('loaitin.update');
+    Route::delete('/admin/loaitin/{id}/destroy', [LoaiTinController::class, 'destroy'])->name('loaitin.destroy');
+});
 
 
 
@@ -40,7 +36,8 @@ Route::delete('/admin/loaitin/{id}/destroy', [LoaiTinController::class, 'destroy
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\AdminController;
 
-Route::prefix('admin')->name('news.')->group(function () {
+
+Route::prefix('admin')->name('news.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/news', [NewsController::class, 'index'])->name('index');
     Route::get('/news/create', [NewsController::class, 'create'])->name('create');
     Route::post('/news/store', [NewsController::class, 'store'])->name('store');
@@ -80,3 +77,21 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/search', [TinController::class, 'search'])->name('search');
 
+use App\Models\User;
+
+Route::get('/verification-notice', function () {
+    return view('client.view.auth.verify'); // Chỉ định tên file verify.blade.php
+})->name('verification.notice');
+
+Route::get('/email/verify/{id}', function ($id) {
+    $user = User::findOrFail($id);
+    $user->email_verified_at = now();
+    $user->save();
+
+    return redirect()->route('login')->with('success', 'Xác nhận email thành công! Bạn có thể đăng nhập.');
+})->name('verification.verify');
+Route::get('/email/verify/{id}', [AuthController::class, 'verifyEmail'])->name('verification.verify');
+
+
+
+Route::post('/news/{id}/comments', [CommentController::class, 'store'])->name('comments.store');

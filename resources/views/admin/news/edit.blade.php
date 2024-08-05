@@ -3,7 +3,7 @@
 @section('content')
     <h1>Sửa Tin Tức</h1>
 
-    <form action="{{ route('news.update', $news->id) }}" method="POST">
+    <form action="{{ route('news.update', $news->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -22,32 +22,23 @@
             <textarea name="tomTat" id="tomTat" class="form-control">{{ $news->tomTat }}</textarea>
         </div>
 
-        <div class="form-group">
-            <label for="ngayDang">Ngày Đăng:</label>
-            <input type="datetime-local" name="ngayDang" id="ngayDang" class="form-control" value="{{ $news->ngayDang->format('Y-m-d\TH:i') }}" required>
-        </div>
-
-        <div class="form-group">
-            <label for="xem">Số Lượng Xem:</label>
-            <input type="number" name="xem" id="xem" class="form-control" value="{{ $news->xem }}" required>
-        </div>
 
         <div class="form-group">
             <label for="image">Hình Ảnh:</label>
-            <input type="url" name="image" id="image" class="form-control" value="{{ $news->image }}">
+            <input type="file" name="image" id="image" class="form-control">
+            <small>Hiện tại: <img src="{{ asset('storage/images/' . $news->image) }}" alt="Image" width="100"></small>
         </div>
 
         <div class="form-group">
             <label for="idLT">Loại Tin:</label>
             <select name="idLT" id="idLT" class="form-control" required>
-                @foreach($loaitins as $loaitin) <!-- Changed $loaitins to $loaitin -->
+                @foreach($loaitins as $loaitin)
                     <option value="{{ $loaitin->id }}" {{ $loaitin->id == $news->idLT ? 'selected' : '' }}>
                         {{ $loaitin->tenLoai }}
                     </option>
                 @endforeach
             </select>
         </div>
-
 
         <button type="submit" class="btn btn-primary">Cập Nhật</button>
     </form>

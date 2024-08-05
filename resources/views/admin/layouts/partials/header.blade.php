@@ -29,7 +29,9 @@
                         <p class="red">You have 4 Mails</p>
                         <!-- Message items here -->
                     </div>
+
                 </div>
+
             </div>
         </div>
     </div>
